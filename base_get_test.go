@@ -608,6 +608,38 @@ func TestGetBasicArgsQueryStructErr(t *testing.T) {
 
 }
 
+func TestGetBasicArgsQueryStructUrlQueryErr(t *testing.T) {
+	ro := &RequestOptions{
+		QueryStruct: 5,
+	}
+	resp, err := Get("http://httpbin.org/get?Goodbye=World%zz", ro)
+
+	if err == nil {
+		t.Error("URL Parsing should have failed")
+	}
+
+	if resp.Ok == true {
+		t.Error("Request did return OK")
+	}
+
+}
+
+func TestGetBasicArgsQueryStructUrlErr(t *testing.T) {
+	ro := &RequestOptions{
+		QueryStruct: 5,
+	}
+	resp, err := Get("%", ro)
+
+	if err == nil {
+		t.Error("URL Parsing should have failed")
+	}
+
+	if resp.Ok == true {
+		t.Error("Request did return OK")
+	}
+
+}
+
 func TestGetBasicArgsErr(t *testing.T) {
 	ro := &RequestOptions{
 		Params: map[string]string{"Hello": "World"},
