@@ -130,6 +130,9 @@ type RequestOptions struct {
 
 	// Context can be used to maintain state between requests https://golang.org/pkg/context/#Context
 	Context context.Context
+
+	// TcpAddr is for tcp addr
+	TcpAddr *net.TCPAddr
 }
 
 func doRegularRequest(requestVerb, url string, ro *RequestOptions) (*Response, error) {
@@ -485,6 +488,7 @@ func createHTTPTransport(ro RequestOptions) *http.Transport {
 		Dial: (&net.Dialer{
 			Timeout:   ro.DialTimeout,
 			KeepAlive: ro.DialKeepAlive,
+			LocalAddr: ro.TcpAddr,
 		}).Dial,
 		TLSHandshakeTimeout: ro.TLSHandshakeTimeout,
 
